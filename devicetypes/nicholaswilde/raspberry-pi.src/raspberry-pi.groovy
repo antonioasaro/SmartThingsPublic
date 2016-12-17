@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 
 
 preferences {
-        input("ip", "string", title:"IP Address", description: "192.168.1.150", defaultValue: "192.168.1.150" ,required: true, displayDuringSetup: true)
+        input("ip", "string", title:"IP Address", description: "192.168.1.185", defaultValue: "192.168.1.185" ,required: true, displayDuringSetup: true)
         input("port", "string", title:"Port", description: "80", defaultValue: "80" , required: true, displayDuringSetup: true)
         input("username", "string", title:"Username", description: "pi", defaultValue: "pi" , required: true, displayDuringSetup: true)
         input("password", "password", title:"Password", description: "raspberry", defaultValue: "raspberry" , required: true, displayDuringSetup: true)
@@ -43,6 +43,7 @@ metadata {
         capability "Sensor"
         capability "Actuator"
         capability "Contact Sensor"
+        capability "Light"
         
         attribute "cpuPercentage", "string"
         attribute "memory", "string"
@@ -112,6 +113,10 @@ metadata {
 			state("closed", label:'${name}', icon:"st.contact.contact.closed", backgroundColor:"#79b821", action: "open")
 			state("open", label:'${name}', icon:"st.contact.contact.open", backgroundColor:"#ffa81e", action: "close")
 		}
+        standardTile("light", "device.light", width: 1, height: 1, canChangeIcon: true) {
+			state "off", label: 'Off', icon: "st.lights.philips.hue-single", backgroundColor: "#ffffff", nextState: "on"
+			state "on", label: 'On', icon: "st.lights.philips.hue-single", backgroundColor: "#efef00", nextState: "off"
+		}
         standardTile("restart", "device.restart", inactiveLabel: false, decoration: "flat") {
         	state "default", action:"restart", label: "Restart", displayName: "Restart"
         }
@@ -119,7 +124,7 @@ metadata {
         	state "default", action:"refresh.refresh", icon: "st.secondary.refresh"
         }
         main "button"
-        details(["button", "temperature", "cpuPercentage", "memory" , "diskUsage", "contact", "restart", "refresh"])
+        details(["button", "temperature", "cpuPercentage", "memory" , "diskUsage", "contact", "light", "restart", "refresh"])
     }
 }
 
@@ -188,6 +193,16 @@ def parse(String description) {
 }
 
 // handle commands
+def on() {
+	log.debug "Executing 'light on'"
+	sendEvent(name: "light", value: "on")
+}
+
+def off() {
+	log.debug "Executing 'light off'"
+	sendEvent(name: "light", value: "off")
+}
+
 def poll() {
 	log.debug "Executing 'poll'"
     sendEvent(name: "switch", value: "off")
