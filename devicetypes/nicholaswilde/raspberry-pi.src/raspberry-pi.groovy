@@ -117,14 +117,14 @@ metadata {
 			state "off", label: 'Off', icon: "st.lights.philips.hue-single", backgroundColor: "#ffffff", nextState: "on"
 			state "on", label: 'On', icon: "st.lights.philips.hue-single", backgroundColor: "#efef00", nextState: "off"
 		}
+       standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat") {
+        	state "default", action:"refresh.refresh", icon: "st.secondary.refresh"
+        }
         standardTile("restart", "device.restart", inactiveLabel: false, decoration: "flat") {
         	state "default", action:"restart", label: "Restart", displayName: "Restart"
         }
-        standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat") {
-        	state "default", action:"refresh.refresh", icon: "st.secondary.refresh"
-        }
         main "button"
-        details(["button", "temperature", "cpuPercentage", "memory" , "diskUsage", "contact", "light", "restart", "refresh"])
+        details(["button", "temperature", "cpuPercentage", "memory" , "diskUsage", "contact", "light", "refresh", "restart"])
     }
 }
 
@@ -196,11 +196,15 @@ def parse(String description) {
 def on() {
 	log.debug "Executing 'light on'"
 	sendEvent(name: "light", value: "on")
+    def uri = "/api_command/light_on"
+    postAction(uri)
 }
 
 def off() {
 	log.debug "Executing 'light off'"
 	sendEvent(name: "light", value: "off")
+    def uri = "/api_command/light_off"
+    postAction(uri)
 }
 
 def poll() {
