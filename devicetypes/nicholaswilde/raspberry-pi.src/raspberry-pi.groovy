@@ -58,7 +58,7 @@ metadata {
 
 	tiles {
 		valueTile("temperature", "device.temperature", width: 1, height: 1) {
-            state "temperature", label:'${currentValue}° CPU', unit: "F",
+            state "temperature", label:'${currentValue}° CPU', unit: "C",
             backgroundColors:[
                 [value: 25, color: "#153591"],
                 [value: 35, color: "#1e9cbb"],
@@ -110,8 +110,8 @@ metadata {
             ]
         }
         standardTile("contact", "device.contact", width: 1, height: 1) {
-			state("closed", label:'${name}', icon:"st.contact.contact.closed", backgroundColor:"#79b821", action: "open")
-			state("open", label:'${name}', icon:"st.contact.contact.open", backgroundColor:"#ffa81e", action: "close")
+			state "closed", label:'${name}', icon:"st.contact.contact.closed", backgroundColor:"#79b821", action: "open"
+			state "open", label:'${name}', icon:"st.contact.contact.open", backgroundColor:"#ffa81e", action: "close"
 		}
         standardTile("light", "device.light", width: 1, height: 1, canChangeIcon: true) {
 			state "off", label: 'Off', icon: "st.lights.philips.hue-single", backgroundColor: "#ffffff", nextState: "on"
@@ -152,8 +152,9 @@ def parse(String description) {
     // log.debug "check temp..."
     if (result.containsKey("cpu_temp")) {
     	log.debug "temp: ${result.cpu_temp.toDouble().round()} C"
-        log.debug "temp: ${celsiusToFahrenheit(result.cpu_temp.toDouble().round())} F"
-    	sendEvent(name: "temperature", value: celsiusToFahrenheit(result.cpu_temp.toDouble().round()))
+//        log.debug "temp: ${celsiusToFahrenheit(result.cpu_temp.toDouble().round())} F"
+//    	  sendEvent(name: "temperature", value: celsiusToFahrenheit(result.cpu_temp.toDouble().round()))
+    	sendEvent(name: "temperature", value: result.cpu_temp.toDouble().round())
     }
     
     if (result.containsKey("cpu_perc")) {
