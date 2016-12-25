@@ -114,8 +114,8 @@ metadata {
 			state "open", label:'${name}', icon:"st.contact.contact.open", backgroundColor:"#ffa81e", action: "close"
 		}
         standardTile("light", "device.light", width: 1, height: 1, canChangeIcon: true) {
-			state "off", label: 'Off', icon: "st.lights.philips.hue-single", backgroundColor: "#ffffff", nextState: "on"
-			state "on", label: 'On', icon: "st.lights.philips.hue-single", backgroundColor: "#efef00", nextState: "off"
+			state "off", action: "on", label: 'Off', icon: "st.lights.philips.hue-single", backgroundColor: "#ffffff", nextState: "on"
+			state "on", action: "off", label: 'On', icon: "st.lights.philips.hue-single", backgroundColor: "#efef00", nextState: "off"
 		}
        standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat") {
         	state "default", action:"refresh.refresh", icon: "st.secondary.refresh"
