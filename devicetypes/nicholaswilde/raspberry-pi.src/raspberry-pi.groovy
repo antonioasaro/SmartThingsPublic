@@ -144,7 +144,7 @@ def parse(String description) {
     
     log.debug "result: ${result}"
 
-	if (result){
+	if (result) {
     	log.debug "Raspberry Pi is up"
    		sendEvent(name: "switch", value: "on")
     }
@@ -185,6 +185,15 @@ def parse(String description) {
     if (result.containsKey("PIR_update")) {
     	log.debug "PIR_update: ${result.PIR_update}"
         if (result.PIR_update.contains("1")) {
+            sendEvent(name: "contact", value: "closed")
+        } else {
+            sendEvent(name: "contact", value: "open")
+        }
+    }
+    // handle garage open msgs
+	if (result.containsKey("garage_update")) {
+    	log.debug "garage_update: ${result.garage_update}"
+        if (result.garage_update.contains("1")) {
             sendEvent(name: "contact", value: "closed")
         } else {
             sendEvent(name: "contact", value: "open")
